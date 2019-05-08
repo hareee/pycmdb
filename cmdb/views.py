@@ -16,7 +16,7 @@ def __get_response_json_dict(data, err_code=0, message="Success"):
     }
     return ret
 
-def get_sum(request):
+def inventory(request):
     inventory = {}
     hosts = Host.objects.all().exclude(ip__isnull=True).exclude(ip__exact='')
     for host in hosts:

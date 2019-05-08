@@ -35,7 +35,7 @@ class ExampleInventory(object):
     # Example inventory for testing.
     def example_inventory(self):
         from urllib import request
-        response = request.urlopen(r'http://localhost:8000/api/sum')
+        response = request.urlopen(r'http://localhost:8000/api/inventory')
         page = response.read().decode('utf-8')
         text = json.loads(page)['data']
         return text
