@@ -27,8 +27,28 @@ class HostAdmin(admin.ModelAdmin):
 			return qs
 		return qs.filter(user=User.objects.filter(user_name=request.user))
 
-	list_display = ('name', 'ip', 'status', 'system', 'virtual', 'datacenter', 'rack', 'created_time', 'modified_time')
-	list_filter = ('status', 'system', 'virtual', 'datacenter', 'rack', 'system__application_manager', 'system__hardware_manager',)
+	actions = ['approve', 'reject', 'manual' ]
+
+	def approve(self, request, queryset):
+		queryset.update(verify=1)
+		self.message_user(request, '主机已通过审核!')
+
+	approve.short_description = '通过审核'
+
+	def reject(self, request, queryset):
+		queryset.update(verify=2)
+		self.message_user(request, '主机已拒绝审核!')
+
+	reject.short_description = '审核不通过'
+
+	def manual(self, request, queryset):
+		queryset.update(verify=3)
+		self.message_user(request, '主机不需要审核!')
+
+	manual.short_description = '不需要审核'
+
+	list_display = ('name', 'ip', 'status', 'verify', 'system', 'virtual', 'datacenter', 'rack', 'source', 'created_time', 'modified_time')
+	list_filter = ('status', 'verify', 'system', 'virtual', 'datacenter', 'rack', 'source', 'system__application_manager', 'system__hardware_manager',)
 	search_fields = ('name', 'ip', 'created_time', 'modified_time')
 	fk_fields = ('hardware_manager', 'application_manager',)
 
@@ -37,6 +57,8 @@ class HostAdmin(admin.ModelAdmin):
 
 	# ordering设置默认排序字段，负号表示降序排序
 	ordering = ('name',)
+
+	readonly_fields = ["source", ]
 
 
 @admin.register(BusinessSystem)
