@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cmdb.apps.CmdbConfig',
-    'rest_framework',
+    'autops'
+    #'rest_framework',
 ]
 
 MIDDLEWARE = [
